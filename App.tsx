@@ -32,29 +32,35 @@ function Row({ row }: { row: number }) {
 }
 
 function Cell({ row, col }: { row: number; col: number }) {
-  const cellValue = useSudokuStore((state) => state.gridValues[getIndex(row, col)])
-  const setCellValue = useSudokuStore((state) => state.setCellValue)
+  const cellValue = useSudokuStore(
+    (state) => state.gridValues[getIndex(row, col)]
+  );
+  const setCellValue = useSudokuStore((state) => state.setCellValue);
 
   const onChangeText = (val: string) => {
-    const newCellValue: CellValue = {value: val, readOnly: false};
+    const newCellValue: CellValue = { value: val, readOnly: false };
     setCellValue(row, col, newCellValue);
   };
+
+  const thickedTargetBorderWidths = (rowOrCol: number, targets: string) =>
+    targets.split("").includes((rowOrCol + 1).toString())
+      ? extraBorderWidth
+      : standardBorderWidth;
 
   return (
     <TextInput
       value={cellValue.value}
+      keyboardType="number-pad"
       onChangeText={onChangeText}
       readOnly={cellValue.readOnly}
       style={{
         ...styles.cell,
         fontWeight: cellValue.readOnly ? "bold" : "normal",
         color: cellValue.value.length == 1 ? "black" : "blue",
-        borderRightWidth: "36".split("").includes((col + 1).toString())
-          ? extraBorderWidth
-          : standardBorderWidth,
-        borderBottomWidth: "36".split("").includes((row + 1).toString())
-          ? extraBorderWidth
-          : standardBorderWidth,
+        borderTopWidth: thickedTargetBorderWidths(row, "1"),
+        borderLeftWidth: thickedTargetBorderWidths(col, "1"),
+        borderRightWidth: thickedTargetBorderWidths(col, "369"),
+        borderBottomWidth: thickedTargetBorderWidths(row, "369"),
       }}
       maxLength={3}
     />
@@ -62,7 +68,8 @@ function Cell({ row, col }: { row: number; col: number }) {
 }
 
 const gridSize = 9;
-const cellSize = 50;
+const cellSize = 42;
+const fontSize = 24;
 const standardBorderWidth = 1;
 const extraBorderWidth = 3;
 
@@ -78,6 +85,6 @@ const styles = StyleSheet.create({
     width: cellSize,
     height: cellSize,
     textAlign: "center",
-    fontSize: 24,
+    fontSize: fontSize,
   },
 });
