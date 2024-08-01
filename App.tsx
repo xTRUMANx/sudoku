@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, TextInput, View } from "react-native";
-import { CellValue, getIndex, useSudokuStore } from "./store";
+import { CellValue, useSudokuStore } from "./store";
 
 export default function App() {
   return (
@@ -32,9 +32,7 @@ function Row({ row }: { row: number }) {
 }
 
 function Cell({ row, col }: { row: number; col: number }) {
-  const cellValue = useSudokuStore(
-    (state) => state.gridValues[getIndex(row, col)]
-  );
+  const cellValue = useSudokuStore((state) => state.getCellValue(row, col));
   const setCellValue = useSudokuStore((state) => state.setCellValue);
 
   const onChangeText = (val: string) => {
