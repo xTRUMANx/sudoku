@@ -1,5 +1,6 @@
 import { produce } from "immer";
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 export interface CellValue {
   value: string;
@@ -26,14 +27,16 @@ interface SudokuState {
 
 const getIndex = (row: number, col: number) => row * 9 + col;
 
-export const useSudokuStore = create<SudokuState>((set, get) => ({
-  gridValues: createGrid(),
-  getCellValue: (row, col) => get().gridValues[getIndex(row, col)],
-  setCellValue: (row, col, cellValue) => {
-    set(
-      produce<SudokuState>((state) => {
-        state.gridValues[getIndex(row, col)] = cellValue;
-      })
-    );
-  },
-}));
+export const useSudokuStore = create<SudokuState>()(
+  devtools((set, get) => ({
+    gridValues: createGrid(),
+    getCellValue: (row, col) => get().gridValues[getIndex(row, col)],
+    setCellValue: (row, col, cellValue) => {
+      set(
+        produce<SudokuState>((state) => {
+          state.gridValues[getIndex(row, col)] = cellValue;
+        })
+      );
+    },
+  }))
+);
