@@ -14,7 +14,7 @@ function createGrid() {
   for (let row = 0; row < gridSize; row++) {
     for (let col = 0; col < gridSize; col++) {
       newGrid[row * 9 + col] = {
-        value: `${row + 1}${col + 1}`,
+        value: (((row + col) % 9) + 1).toString(),
         readOnly: row % 3 == 0 && col % 3 == 0,
       };
     }

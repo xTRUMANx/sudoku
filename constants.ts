@@ -1,1 +1,2 @@
-export const gridSize: number = 9;
+export const validValues = new Set("123456789".split(""));
+export const gridSize: number = validValues.size;
