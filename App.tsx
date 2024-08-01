@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, TextInput, View } from "react-native";
+import { Button, StyleSheet, TextInput, View } from "react-native";
 import { CellValue, useSudokuStore } from "./store";
+import { gridSize } from "./constants";
 
 export default function App() {
   return (
@@ -12,11 +13,14 @@ export default function App() {
 }
 
 function Grid() {
+  const solve = useSudokuStore(state => state.solve);
+
   return (
     <View style={{ flexDirection: "column" }}>
       {Array.from({ length: gridSize }).map((_, row) => (
         <Row key={`r${row}`} row={row} />
       ))}
+      <Button onPress={solve} title="Solve!" />
     </View>
   );
 }
@@ -65,7 +69,6 @@ function Cell({ row, col }: { row: number; col: number }) {
   );
 }
 
-const gridSize = 9;
 const cellSize = 42;
 const fontSize = 24;
 const standardBorderWidth = 1;
